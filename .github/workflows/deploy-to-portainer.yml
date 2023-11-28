@@ -13,7 +13,7 @@ jobs:
 
     env:
       PORTAINER_USER: ${{ secrets.PORTAINER_USER }}
-      PORTAINER_ACCESS_KEY: ${{ secrets.PORTAINER_ACCESS_KEY }}
+      PORTAINER_ACCESS_KEY: ${{ secrets.PORTAINER_ACCESS_TOKEN }}
       PORTAINER_PASSWORD: ${{ secrets.PORTAINER_PASSWORD }}
       MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
       MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
@@ -26,7 +26,7 @@ jobs:
         uses: datntdev0/action-deploy-to-portainer@v0.1.0
         with:
           portainerHost: ${{ secrets.PORTAINER_HOST }}
-          portainerApiKey: ${{ secrets.PORTAINER_ACCESS_KEY }}
+          portainerApiKey: ${{ secrets.PORTAINER_ACCESS_TOKEN }}
           portainerEnvId: 'local'
           portainerStackName: 'opendata'
           portainerFilePath: './docker-compose.yml'
