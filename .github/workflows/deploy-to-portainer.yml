@@ -25,7 +25,7 @@ jobs:
         uses: carlrygart/portainer-stack-deploy@v1
         with:
           portainer-host: ${{ secrets.PORTAINER_HOST }}
-          username: ${{ secrets.PORTAINER_USERNAME }}
+          username: ${{ secrets.PORTAINER_USER }}
           password: ${{ secrets.PORTAINER_PASSWORD }}
           stack-name: 'opendata'
           stack-definition: 'docker-compose.yml'
