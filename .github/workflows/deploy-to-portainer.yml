@@ -12,21 +12,30 @@ jobs:
     timeout-minutes: 20
 
     env:
-      PORTAINER_USER: ${{ secrets.PORTAINER_USER }}
-      PORTAINER_ACCESS_KEY: ${{ secrets.PORTAINER_ACCESS_TOKEN }}
-      PORTAINER_PASSWORD: ${{ secrets.PORTAINER_PASSWORD }}
+      DOCKER_SSH_PRIVATE_KEY: ${{DOCKER_SSH_PRIVATE_KEY}}
+      DOCKER_SSH_PUBLIC_KEY: ${{DOCKER_SSH_PUBLIC_KEY}}
       MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
       MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
-      PORTAINER_HOST: ${{ secrets.PORTAINER_HOST }}
 
     steps:
       - uses: actions/checkout@v2
 
+      - name: Parse secrets in docker-compose.yml
+        uses: jwsi/secret-parser@v1
+        with: 
+          filename: docker-compose.yml
+          secret-name: MINIO_ROOT_USER
+          secret-value: ${{ secrets.important_value }}
+
       - name: Deploy stack to Portainer
-        uses: datntdev0/action-deploy-to-portainer@v0.1.0
+        uses: wshihadeh/docker-deployment-action@v1
         with:
-          portainerHost: ${{ secrets.PORTAINER_HOST }}
-          portainerApiKey: ${{ secrets.PORTAINER_ACCESS_TOKEN }}
-          portainerEnvId: '2'
-          portainerStackName: 'opendata'
-          portainerFilePath: './docker-compose.yml'
+          remote_docker_host: githubactions@citygo.es
+          ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+          ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+          deployment_mode: docker-compose
+          copy_stack_file: true
+          deploy_path: /root/my-deployment
+          stack_file_name: docker-compose.yaml
+          keep_files: 5
+          args: my_applicaion
