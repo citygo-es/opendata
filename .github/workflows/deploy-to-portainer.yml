@@ -27,6 +27,6 @@ jobs:
         with:
           portainerHost: ${{ secrets.PORTAINER_HOST }}
           portainerApiKey: ${{ secrets.PORTAINER_ACCESS_TOKEN }}
-          portainerEnvId: 1
+          portainerEnvId: 'citygo.es'
           portainerStackName: 'opendata'
           portainerFilePath: './docker-compose.yml'
