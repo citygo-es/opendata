@@ -21,15 +21,18 @@ services:
     environment:
       MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
       MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
+      MINIO_REGION_NAME: 'eu-central-1'
+      MINIO_BROWSER_REDIRECT_URL: https://opendata-console.citygo.es
+      MINIO_SERVER_URL: https://opendata.citygo.es # MinIO S3 API
     command: server --console-address ":9001" /data
     labels:
       traefik.enable: 'true'
       traefik.docker.network: traefik
-      traefik.http.routers.minio.entrypoints: websecure
-      traefik.http.routers.minio.rule: Host(`opendata.citygo.es`)
-      traefik.http.routers.minio.tls.certresolver: acme
-      traefik.http.services.minio.loadbalancer.server.port: '9000'
-      traefik.http.routers.minio-console.entrypoints: websecure
-      traefik.http.routers.minio-console.rule: Host(`opendata-console.citygo.es`)
-      traefik.http.routers.minio-console.tls.certresolver: acme
-      traefik.http.services.minio-console.loadbalancer.server.port: '9001'
+      traefik.http.routers.opendata.entrypoints: websecure
+      traefik.http.routers.opendata.rule: Host(`opendata.citygo.es`)
+      traefik.http.routers.opendata.tls.certresolver: acme
+      traefik.http.services.opendata.loadbalancer.server.port: '9000'
+      traefik.http.routers.opendata-console.entrypoints: websecure
+      traefik.http.routers.opendata-console.rule: Host(`opendata-console.citygo.es`)
+      traefik.http.routers.opendata-console.tls.certresolver: acme
+      traefik.http.services.opendata-console.loadbalancer.server.port: '9001'
