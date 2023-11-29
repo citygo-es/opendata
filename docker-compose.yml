@@ -32,7 +32,9 @@ services:
       traefik.http.routers.opendata.rule: Host(`opendata.citygo.es`)
       traefik.http.routers.opendata.tls.certresolver: acme
       traefik.http.services.opendata.loadbalancer.server.port: '9000'
+      traefik.http.routers.opendata.service: opendata
       traefik.http.routers.opendata-console.entrypoints: websecure
       traefik.http.routers.opendata-console.rule: Host(`opendata-console.citygo.es`)
       traefik.http.routers.opendata-console.tls.certresolver: acme
       traefik.http.services.opendata-console.loadbalancer.server.port: '9001'
+      traefik.http.routers.opendata-console.service: opendata-console
