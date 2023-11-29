@@ -45,4 +45,4 @@ jobs:
           deploy_path: /home/githubactions/opendata
           stack_file_name: docker-compose.yml
           keep_files: 5
-          args: 
+          args: opendata
