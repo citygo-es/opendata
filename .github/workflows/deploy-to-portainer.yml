@@ -12,8 +12,8 @@ jobs:
     timeout-minutes: 20
 
     env:
-      DOCKER_SSH_PRIVATE_KEY: ${{DOCKER_SSH_PRIVATE_KEY}}
-      DOCKER_SSH_PUBLIC_KEY: ${{DOCKER_SSH_PUBLIC_KEY}}
+      DOCKER_SSH_PRIVATE_KEY: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+      DOCKER_SSH_PUBLIC_KEY: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
       MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
       MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
 
