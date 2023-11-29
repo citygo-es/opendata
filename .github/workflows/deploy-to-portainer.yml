@@ -20,12 +20,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Parse secrets in docker-compose.yml
+      - name: Parse secret MINIO_ROOT_USER in docker-compose.yml
         uses: jwsi/secret-parser@v1
         with: 
           filename: docker-compose.yml
           secret-name: MINIO_ROOT_USER
-          secret-value: ${{ secrets.important_value }}
+          secret-value: ${{ secrets.MINIO_ROOT_USER }}
+
+      - name: Parse secret MINIO_ROOT_PASSWORD in docker-compose.yml
+        uses: jwsi/secret-parser@v1
+        with: 
+          filename: docker-compose.yml
+          secret-name: MINIO_ROOT_PASSWORD
+          secret-value: ${{ secrets.MINIO_ROOT_PASSWORD }}
 
       - name: Deploy stack to Portainer
         uses: wshihadeh/docker-deployment-action@v1
@@ -38,4 +45,4 @@ jobs:
           deploy_path: /root/my-deployment
           stack_file_name: docker-compose.yaml
           keep_files: 5
-          args: my_applicaion
+          args: opendata
