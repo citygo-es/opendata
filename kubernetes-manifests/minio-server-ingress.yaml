@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.yml
+    kompose.service.expose: opendata.citygo.es,console.opendata.citygo.es
+    kompose.service.expose.ingress-class-name: traefik
+    kompose.service.expose.tls-secret: opendata-tls-secret
+    kompose.version: 1.31.2 (HEAD)
+    cert-manager.io/cluster-issuer: letsencrypt
+  creationTimestamp: null
+  labels:
+    io.kompose.service: minio-server
+  name: minio-server
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: opendata.citygo.es
+      http:
+        paths:
+          - backend:
+              service:
+                name: minio-server
+                port:
+                  number: 9000
+            path: /
+            pathType: Prefix
+    - host: console.opendata.citygo.es
+      http:
+        paths:
+          - backend:
+              service:
+                name: minio-server
+                port:
+                  number: 9001
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - opendata.citygo.es
+      secretName: opendata-tls-secret
+        - console.opendata.citygo.es
+      secretName: opendata-console-tls-secret
+status:
+  loadBalancer: {}

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.yml
+    kompose.service.expose: opendata.citygo.es,console.opendata.citygo.es
+    kompose.service.expose.ingress-class-name: traefik
+    kompose.service.expose.tls-secret: opendata-tls-secret
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: minio-server
+  name: minio-server
+spec:
+  ports:
+    - name: "9000"
+      port: 9000
+      targetPort: 9000
+    - name: "9001"
+      port: 9001
+      targetPort: 9001
+  selector:
+    io.kompose.service: minio-server
+status:
+  loadBalancer: {}

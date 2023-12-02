@@ -20,29 +20,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Parse secret MINIO_ROOT_USER in docker-compose.yml
-        uses: jwsi/secret-parser@v1
-        with: 
-          filename: docker-compose.yml
-          secret-name: MINIO_ROOT_USER
-          secret-value: ${{ secrets.MINIO_ROOT_USER }}
-
-      - name: Parse secret MINIO_ROOT_PASSWORD in docker-compose.yml
-        uses: jwsi/secret-parser@v1
-        with: 
-          filename: docker-compose.yml
-          secret-name: MINIO_ROOT_PASSWORD
-          secret-value: ${{ secrets.MINIO_ROOT_PASSWORD }}
-
-      - name: Deploy stack to Portainer
-        uses: wshihadeh/docker-deployment-action@v1
+      - name: Set the Kubernetes context
+        uses: azure/k8s-set-context@v2
         with:
-          remote_docker_host: githubactions@citygo.es
-          ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
-          ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
-          deployment_mode: docker-compose
-          copy_stack_file: true
-          deploy_path: /home/githubactions/opendata
-          stack_file_name: docker-compose.yml
-          keep_files: 5
-          args: -p opendata up --remove-orphans -d
+          method: service-account
+          k8s-url: https://citygo.es:6443
+          k8s-secret: ${{ secrets.KUBERNETES_TOKEN}}
+          k8s-namespace: citygo-es
+
+      - name: Deploy to Kubernetes
+      uses: azure/k8s-deploy@v1
+      with:
+        namespace: default
+        manifests: |
+          kuberenetes-manifests/minio-storage-pesistentvolumeclaim.yaml
+          kubernetes-manifests/minio-server-deployment.yaml
+          kubernetes-manifests/minio-server-service.yaml
+          kubernetes-manifests/minio-server-ingress.yaml
+
+      
+

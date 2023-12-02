@@ -13,28 +13,20 @@ volumes:
 services:
   minio-server:
     image: minio/minio:RELEASE.2023-11-20T22-40-07Z
-    networks: 
-      - traefik
-      - monitoring
+    ports:
+      - 9000
+      - 9001
     volumes:
       - minio-storage:/data
     environment:
-      MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
-      MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
+      MINIO_ROOT_USER: $${{ secrets.MINIO_ROOT_USER }}
+      MINIO_ROOT_PASSWORD: $${{ secrets.MINIO_ROOT_PASSWORD }}
       MINIO_REGION_NAME: 'eu-central-1'
-      MINIO_BROWSER_REDIRECT_URL: https://opendata-console.citygo.es
+      MINIO_BROWSER_REDIRECT_URL: https://console.opendata.citygo.es
       MINIO_SERVER_URL: https://opendata.citygo.es # MinIO S3 API
     command: server --console-address ":9001" /data
     labels:
-      traefik.enable: 'true'
-      traefik.docker.network: traefik
-      traefik.http.routers.opendata.entrypoints: websecure
-      traefik.http.routers.opendata.rule: Host(`opendata.citygo.es`)
-      traefik.http.routers.opendata.tls.certresolver: acme
-      traefik.http.services.opendata.loadbalancer.server.port: '9000'
-      traefik.http.routers.opendata.service: opendata
-      traefik.http.routers.opendata-console.entrypoints: websecure
-      traefik.http.routers.opendata-console.rule: Host(`opendata-console.citygo.es`)
-      traefik.http.routers.opendata-console.tls.certresolver: acme
-      traefik.http.services.opendata-console.loadbalancer.server.port: '9001'
-      traefik.http.routers.opendata-console.service: opendata-console
+      kompose.service.expose: "opendata.citygo.es,console.opendata.citygo.es"
+      kompose.service.expose.tls-secret: "opendata-tls-secret"
+      kompose.service.expose.ingress-class-name: "traefik"
+
