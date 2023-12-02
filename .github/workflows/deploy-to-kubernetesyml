@@ -29,14 +29,14 @@ jobs:
           k8s-namespace: citygo-es
 
       - name: Deploy to Kubernetes
-      uses: azure/k8s-deploy@v1
-      with:
-        namespace: default
-        manifests: |
-          kuberenetes-manifests/minio-storage-pesistentvolumeclaim.yaml
-          kubernetes-manifests/minio-server-deployment.yaml
-          kubernetes-manifests/minio-server-service.yaml
-          kubernetes-manifests/minio-server-ingress.yaml
+        uses: azure/k8s-deploy@v1
+        with:
+          namespace: default
+          manifests: |
+            kubernetes-manifests/minio-storage-pesistentvolumeclaim.yaml
+            kubernetes-manifests/minio-server-deployment.yaml
+            kubernetes-manifests/minio-server-service.yaml
+            kubernetes-manifests/minio-server-ingress.yaml
 
       
 
