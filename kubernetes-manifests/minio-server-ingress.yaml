@@ -39,6 +39,7 @@ spec:
     - hosts:
         - opendata.citygo.es
       secretName: opendata-tls-secret
+    - hosts:
         - console.opendata.citygo.es
       secretName: opendata-console-tls-secret
 status:
