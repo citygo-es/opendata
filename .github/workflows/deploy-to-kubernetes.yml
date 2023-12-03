@@ -33,7 +33,7 @@ jobs:
         with:
           namespace: default
           manifests: |
-            kubernetes-manifests/minio-storage-pesistentvolumeclaim.yaml
+            kubernetes-manifests/minio-storage-persistentvolumeclaim.yaml
             kubernetes-manifests/minio-server-deployment.yaml
             kubernetes-manifests/minio-server-service.yaml
             kubernetes-manifests/minio-server-ingress.yaml
